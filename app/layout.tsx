@@ -35,9 +35,9 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-dvh`}
       >
-        <div className="w-full h-full overflow-y-scroll scrollbar-hide">
+        <div className="w-full h-full scrollbar-hide">
           <div className="w-full min-h-full flex flex-col relative">
             {children}
           </div>

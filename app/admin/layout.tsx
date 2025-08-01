@@ -1,5 +1,5 @@
-import AdminHeader from "@/components/admin/AdminHeader";
-import Footer from "@/components/shared/Footer";
+import AdminHeader from "@/components/admin/admin-header";
+import Footer from "@/components/shared/footer";
 
 const AdminLayout = ({
   children,
