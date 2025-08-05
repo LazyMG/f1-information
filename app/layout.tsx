@@ -24,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scrollbar-hide">
       <head>
         <link
           rel="stylesheet"
@@ -35,9 +35,9 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased h-dvh`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-dvh `}
       >
-        <div className="w-full h-full scrollbar-hide">
+        <div className="w-full h-full">
           <div className="w-full min-h-full flex flex-col relative">
             {children}
           </div>

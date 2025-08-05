@@ -1,9 +1,40 @@
 "use client";
 
-import { useState } from "react";
+import { uploadFile } from "@/actions/admin/upload-actions";
+import { usePathname } from "next/navigation";
+import { useRef, useState } from "react";
+import { useFormState } from "react-dom";
 
-const ThumbSection = () => {
-  const [thumbnail, setThumbnail] = useState<string | null>(null);
+type Entity = "drivers" | "races" | "constructors" | "circuits";
+
+const ThumbSection = ({ thumbUrl }: { thumbUrl: string | null }) => {
+  const pathname = usePathname();
+  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(thumbUrl);
+
+  const [_, admin, entity, id] = pathname.split("/");
+  const allowedEntities = ["drivers", "races", "constructors", "circuits"];
+
+  const initialEntity = allowedEntities.includes(entity)
+    ? (entity as Entity)
+    : "drivers";
+  const initialId = id || "";
+  const isInitialThumb = useRef(!!thumbUrl);
+
+  const uploadAction = async (
+    prevState: { message: string },
+    formData: FormData
+  ) => {
+    const file = formData.get("thumbnail");
+    if (!file || typeof file === "string") {
+      return { message: "파일이 선택되지 않았습니다." };
+    }
+
+    return uploadFile(prevState, formData, initialEntity, initialId);
+  };
+
+  const [state, formAction, isPending] = useFormState(uploadAction, {
+    message: "",
+  });
 
   const onThumbnailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
@@ -11,16 +42,25 @@ const ThumbSection = () => {
       const file = files[0];
       const reader = new FileReader();
       reader.onloadend = () => {
-        setThumbnail(reader.result as string);
+        setThumbnailUrl(reader.result as string);
       };
       reader.readAsDataURL(file);
     } else {
-      setThumbnail(null);
+      setThumbnailUrl(null);
     }
   };
 
   const deleteThumbnail = () => {
-    setThumbnail(null);
+    if (isPending) return;
+    if (thumbUrl) {
+      if (confirm("기존 이미지를 삭제하시겠습니까?")) {
+        isInitialThumb.current = false;
+        // 삭제 동작
+      } else {
+        isInitialThumb.current = true;
+      }
+    }
+    setThumbnailUrl(null);
   };
 
   return (
@@ -34,45 +74,73 @@ const ThumbSection = () => {
       >
         썸네일
       </h1>
-      <div
+      <form
         className="col-span-2 grid md:grid-cols-2 gap-5 rounded-lg shadow-md sm:p-6 px-4 py-5"
         id="editor__section-thumbnail"
+        action={formAction}
       >
         <div
-          className="rounded-lg aspect-square relative bg-yellow-200"
+          className={`rounded-lg aspect-square relative ${
+            !thumbUrl || !thumbnailUrl ? "bg-yellow-200" : ""
+          }`}
           id="editor__section-thumbnail__add-button"
         >
-          <label
-            htmlFor="thumbnail"
-            className="absolute w-full h-full top-0 left-0 flex justify-center items-center hover:cursor-pointer"
-          >
-            추가하기
-          </label>
+          {thumbnailUrl ? (
+            <div className="relative group w-full h-full">
+              <img
+                src={thumbnailUrl}
+                alt="Thumbnail preview"
+                className="w-full h-full object-cover rounded-lg"
+              />
+              <p
+                onClick={deleteThumbnail}
+                className={`absolute hidden top-1 right-2 group-hover:cursor-pointer group-hover:block ${
+                  isPending ? "cursor-not-allowed" : "cursor-pointer"
+                }`}
+              >
+                X
+              </p>
+            </div>
+          ) : (
+            <label
+              htmlFor="thumbnail"
+              className="absolute w-full h-full top-0 left-0 flex justify-center items-center hover:cursor-pointer"
+            >
+              추가하기
+            </label>
+          )}
           <input
             onChange={onThumbnailChange}
             className="hidden"
             id="thumbnail"
             type="file"
             accept="image/*"
+            name="thumbnail"
           />
         </div>
-        {thumbnail && (
-          <div className="relative group  w-fit">
-            <img src={thumbnail} />
-            <p
-              onClick={deleteThumbnail}
-              className="absolute hidden top-1 right-2 group-hover:cursor-pointer group-hover:block"
+        {/* <FormStatus message={state.message} isLoaded={!!thumbnailUrl} /> */}
+        <div className="flex justify-end items-end w-full">
+          {thumbnailUrl && (
+            <button
+              type="submit"
+              aria-disabled={isPending}
+              disabled={isPending}
+              className="bg-blue-500 text-white px-4 py-2 rounded disabled:bg-gray-400"
             >
-              X
-            </p>
-          </div>
+              {isPending ? "저장 중..." : "저장"}
+            </button>
+          )}
+        </div>
+        {state.message && (
+          <p
+            className={`mt-2 text-sm ${
+              state.message.includes("성공") ? "text-green-500" : "text-red-500"
+            }`}
+          >
+            {state.message}
+          </p>
         )}
-        {thumbnail && (
-          <div className="flex justify-end items-end w-full">
-            <button>저장</button>
-          </div>
-        )}
-      </div>
+      </form>
     </div>
   );
 };

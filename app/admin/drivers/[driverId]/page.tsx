@@ -1,4 +1,17 @@
+import { getDriverInfo } from "@/actions/admin/driver-actions";
 import DriverDetail from "@/components/admin/driver/driver-detail";
+import { Suspense } from "react";
+
+const DriverDetailWrapper = async ({ driverId }: { driverId: string }) => {
+  // 컴포넌트 내에서 데이터 패칭을 진행합니다.
+  const driverInfo = await getDriverInfo(driverId);
+  // console.log(driverInfo);
+  if (!driverInfo) {
+    // 예시: 데이터가 없을 때 에러 발생
+    throw new Error("운전자 정보를 찾을 수 없습니다.");
+  }
+  return <DriverDetail driverInfo={driverInfo} />;
+};
 
 const AdminDriverPage = async ({
   params,
@@ -11,7 +24,9 @@ const AdminDriverPage = async ({
       className="flex flex-col gap-5 max-w-7xl mx-auto w-full"
       id="driver-info-editor"
     >
-      <DriverDetail />
+      <Suspense fallback={<div>로딩 중...</div>}>
+        <DriverDetailWrapper driverId={driverId} />
+      </Suspense>
     </div>
   );
 };

@@ -1,7 +1,10 @@
+import { getDrivers } from "@/actions/admin/driver-actions";
 import DriverContainer from "@/components/admin/driver/driver-container";
 import Link from "next/link";
 
-const AdminDriversPage = () => {
+const AdminDriversPage = async () => {
+  const drivers = await getDrivers();
+  // console.log(drivers);
   return (
     <div
       className="flex flex-col gap-3 max-w-7xl mx-auto w-full"
@@ -37,7 +40,7 @@ const AdminDriversPage = () => {
           </select>
         </div>
       </div>
-      <DriverContainer />
+      <DriverContainer drivers={drivers} />
     </div>
   );
 };

@@ -12,7 +12,7 @@ const ImageSection = () => {
       const file = files[0];
       const reader = new FileReader();
       reader.onloadend = () => {
-        console.log("image", image);
+        // console.log("image", image);
         setImage(reader.result as string);
         setImageList((prev) => [...prev, reader.result as string]);
       };
@@ -59,7 +59,6 @@ const ImageSection = () => {
                 </p>
               </div>
             ))}
-          {/* <div className="bg-yellow-200">이미지</div> */}
           <div className="bg-yellow-200 min-h-[50px] relative">
             <label
               className="absolute w-full h-full flex justify-center items-center top-0 left-0 hover:cursor-pointer"

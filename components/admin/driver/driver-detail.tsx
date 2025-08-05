@@ -8,12 +8,29 @@ import ImageSection from "../shared/image-section";
 
 type DriverSectionSelect = "INFO" | "THUMB" | "IMAGE";
 
-const DriverDetail = () => {
+interface TempDriver {
+  id: number;
+  created_at: string;
+  driver_id: string;
+  kor_name: string;
+  given_name: string;
+  family_name: string;
+  birth_date: string;
+  height: string;
+  weight: string;
+  current_number: number;
+  last_season: number;
+  thumb_url?: string;
+  country: string;
+}
+
+const DriverDetail = ({ driverInfo }: { driverInfo: TempDriver }) => {
   const [section, setSection] = useState<DriverSectionSelect>("INFO");
 
   const onClickSection = (value: DriverSectionSelect) => {
     setSection(value);
   };
+
   return (
     <>
       <div className="mb-5 flex gap-2">
@@ -28,7 +45,11 @@ const DriverDetail = () => {
         </SectionButton>
       </div>
       {section === "INFO" && <DriverInfoSection />}
-      {section === "THUMB" && <ThumbSection />}
+      {section === "THUMB" && (
+        <ThumbSection
+          thumbUrl={driverInfo.thumb_url ? driverInfo.thumb_url : null}
+        />
+      )}
       {section === "IMAGE" && <ImageSection />}
     </>
   );
