@@ -1,6 +1,6 @@
 "use client";
 
-import { uploadFile } from "@/actions/admin/upload-actions";
+import { uploadThumbnail } from "@/actions/admin/upload-actions";
 import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
 import { useFormState } from "react-dom";
@@ -29,7 +29,7 @@ const ThumbSection = ({ thumbUrl }: { thumbUrl: string | null }) => {
       return { message: "파일이 선택되지 않았습니다." };
     }
 
-    return uploadFile(prevState, formData, initialEntity, initialId);
+    return uploadThumbnail(prevState, formData, initialEntity, initialId);
   };
 
   const [state, formAction, isPending] = useFormState(uploadAction, {
