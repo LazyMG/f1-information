@@ -22,6 +22,7 @@ interface TempDriver {
   last_season: number;
   thumb_url?: string;
   country: string;
+  driver_images: string[];
 }
 
 const DriverDetail = ({ driverInfo }: { driverInfo: TempDriver }) => {
@@ -50,7 +51,9 @@ const DriverDetail = ({ driverInfo }: { driverInfo: TempDriver }) => {
           thumbUrl={driverInfo.thumb_url ? driverInfo.thumb_url : null}
         />
       )}
-      {section === "IMAGE" && <ImageSection />}
+      {section === "IMAGE" && (
+        <ImageSection imageUrls={driverInfo.driver_images} />
+      )}
     </>
   );
 };

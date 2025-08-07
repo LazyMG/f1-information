@@ -19,14 +19,23 @@ export const getDriverInfo = async (id: string) => {
   const supabase = await createServerSupabaseClient();
   const { data, error } = await supabase
     .from("driver")
-    .select("*")
+    .select("*, driver_images(image_url)")
     .eq("driver_id", id);
 
   if (error) {
     console.log(error);
     return {};
   }
-  return data[0];
+
+  const driverData = data[0];
+
+  const image_urls = driverData.driver_images.map(
+    (img: { image_url: string }) => img.image_url
+  );
+  return {
+    ...driverData,
+    driver_images: image_urls,
+  };
 };
 
 export const uploadDriverInfo = async (id: string) => {
@@ -60,6 +69,22 @@ export const uploadDriverThumbnail = async (id: string, fullPath: string) => {
     .from("driver")
     .update({ thumb_url: getImageUrl(fullPath) })
     .eq("driver_id", id);
+
+  if (error) {
+    console.log("error", error);
+    return { ok: false };
+  }
+  return { ok: true };
+};
+
+export const uploadDriverImages = async (id: string, fullPath: string) => {
+  const supabase = await createServerSupabaseClient();
+  const { data, error } = await supabase
+    .from("driver_images")
+    .insert({ image_url: getImageUrl(fullPath), driver_id: id });
+
+  console.log("DB 업데이트", id, fullPath);
+  console.log("DB 업데이트", data);
 
   if (error) {
     console.log("error", error);
