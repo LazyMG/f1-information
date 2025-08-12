@@ -1,6 +1,7 @@
 "use client";
 
 import { uploadImages } from "@/actions/admin/upload-actions";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
@@ -130,7 +131,12 @@ const ImageSection = ({ imageUrls }: { imageUrls: string[] }) => {
           {images.length !== 0 &&
             images.map((img, idx) => (
               <div key={img.id} className="group relative">
-                <img src={img.url} className="w-full" />
+                <Image
+                  src={img.url}
+                  alt={`image-${img.id}`}
+                  width={390}
+                  height={218}
+                />
                 <p
                   onClick={() => deleteImageList(img.id)}
                   className="absolute top-1 right-2 hidden group-hover:block group-hover:cursor-pointer"

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 interface TempDriver {
   id: number;
@@ -24,7 +25,13 @@ const DriverCard = ({ driver }: { driver: TempDriver }) => {
       id="driver-card"
     >
       <div id="driver-card__img">
-        <img className="w-32" src={driver.thumb_url ?? ""} />
+        {/* <img className="w-32" src={driver.thumb_url ?? ""} /> */}
+        <Image
+          src={driver.thumb_url ?? ""}
+          alt="driver-thumbnail"
+          width={128}
+          height={128}
+        />
       </div>
       <div
         className="flex-1 flex flex-col justify-between"

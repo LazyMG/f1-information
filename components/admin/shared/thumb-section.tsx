@@ -1,6 +1,7 @@
 "use client";
 
 import { uploadThumbnail } from "@/actions/admin/upload-actions";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
 import { useFormState } from "react-dom";
@@ -87,10 +88,12 @@ const ThumbSection = ({ thumbUrl }: { thumbUrl: string | null }) => {
         >
           {thumbnailUrl ? (
             <div className="relative group w-full h-full">
-              <img
+              <Image
                 src={thumbnailUrl}
-                alt="Thumbnail preview"
-                className="w-full h-full object-cover rounded-lg"
+                alt="thumbnail-preview"
+                className="rounded-lg"
+                width={390}
+                height={390}
               />
               <p
                 onClick={deleteThumbnail}
