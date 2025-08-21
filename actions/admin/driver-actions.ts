@@ -102,7 +102,6 @@ export const getCountries = async() => {
     console.log("error", error);
     return [];
   }
-  console.log(data);
 
   return data;
 }

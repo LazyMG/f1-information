@@ -1,5 +1,6 @@
 import { getDrivers } from "@/actions/admin/driver-actions";
 import DriverContainer from "@/components/admin/driver/driver-container";
+import { TempDriver } from "@/components/admin/driver/driver-detail";
 import Link from "next/link";
 
 const AdminDriversPage = async () => {
@@ -40,7 +41,7 @@ const AdminDriversPage = async () => {
           </select>
         </div>
       </div>
-      <DriverContainer drivers={drivers} />
+      <DriverContainer drivers={drivers as TempDriver[]} />
     </div>
   );
 };

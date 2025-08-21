@@ -1,21 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-
-interface TempDriver {
-  id: number;
-  created_at: string;
-  driver_id: string;
-  kor_name: string;
-  given_name: string;
-  family_name: string;
-  birth_date: string;
-  height: string;
-  weight: string;
-  current_number: number;
-  last_season: number;
-  thumb_url?: string;
-  country: string;
-}
+import { TempDriver } from "./driver-detail";
 
 const DriverCard = ({ driver }: { driver: TempDriver }) => {
   return (
