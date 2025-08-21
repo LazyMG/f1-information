@@ -92,3 +92,17 @@ export const uploadDriverImages = async (id: string, fullPath: string) => {
   }
   return { ok: true };
 };
+
+export const getCountries = async() => {
+  const supabase = await createServerSupabaseClient();
+  const { data, error } = await supabase
+    .from("country").select("*");
+
+  if (error) {
+    console.log("error", error);
+    return [];
+  }
+  console.log(data);
+
+  return data;
+}

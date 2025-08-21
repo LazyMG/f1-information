@@ -8,7 +8,7 @@ import ImageSection from "../shared/image-section";
 
 type DriverSectionSelect = "INFO" | "THUMB" | "IMAGE";
 
-interface TempDriver {
+export interface TempDriver {
   id: number;
   created_at: string;
   driver_id: string;
@@ -25,7 +25,18 @@ interface TempDriver {
   driver_images: string[];
 }
 
-const DriverDetail = ({ driverInfo }: { driverInfo: TempDriver }) => {
+export interface SetUpData{
+  countries:{
+    id: number,
+    created_at: string,
+    code: string,
+    kor_name: string,
+    flag_url: string
+  }[];
+  constructors?:{}[];
+}
+
+const DriverDetail = ({ driverInfo,setUpData }: { driverInfo: TempDriver,setUpData:SetUpData }) => {
   const [section, setSection] = useState<DriverSectionSelect>("INFO");
 
   const onClickSection = (value: DriverSectionSelect) => {
@@ -45,7 +56,7 @@ const DriverDetail = ({ driverInfo }: { driverInfo: TempDriver }) => {
           <span onClick={() => onClickSection("IMAGE")}>이미지</span>
         </SectionButton>
       </div>
-      {section === "INFO" && <DriverInfoSection />}
+      {section === "INFO" && <DriverInfoSection driverInfo={driverInfo} setUpData={setUpData}/>}
       {section === "THUMB" && (
         <ThumbSection
           thumbUrl={driverInfo.thumb_url ? driverInfo.thumb_url : null}

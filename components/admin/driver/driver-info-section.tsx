@@ -1,6 +1,8 @@
 "use client";
 
-const DriverInfoSection = () => {
+import { SetUpData, TempDriver } from "./driver-detail";
+
+const DriverInfoSection = ({ driverInfo,setUpData }: { driverInfo: TempDriver,setUpData:SetUpData }) => {
   return (
     <div
       className="md:grid md:grid-cols-3 md:gap-6 flex flex-col"
@@ -201,13 +203,11 @@ const DriverInfoSection = () => {
                 <option value="" hidden>
                   국가 선택
                 </option>
-                <option value="NL">네덜란드</option>
-                <option value="TH">태국</option>
-                <option value="KR">한국</option>
-                <option value="US">미국</option>
-                <option value="CN">중국</option>
-                <option value="JP">일본</option>
-                <option value="UK">영국</option>
+                {
+                  setUpData.countries.map(country => (
+                    <option value={country.code}>{country.kor_name}</option>
+                  ))
+                }
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center transition-transform duration-200 ease-in-out peer-focus-within:rotate-180">
                 <svg
