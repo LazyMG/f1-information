@@ -1,5 +1,6 @@
 "use server"
 
+import { getImageUrl } from "@/utils/getImageUrl";
 import { createServerSupabaseClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -53,4 +54,18 @@ export const uploadConstructorInfo = async (id: string) => {
   }
 
   redirect(`/admin/constructors/${id}`);
+};
+
+export const uploadConstructorThumbnail = async (id: string, fullPath: string) => {
+  const supabase = await createServerSupabaseClient();
+  const { data, error } = await supabase
+    .from("constructor")
+    .update({ thumb_url: getImageUrl(fullPath) })
+    .eq("constructor_id", id);
+
+  if (error) {
+    console.log("error", error);
+    return { ok: false };
+  }
+  return { ok: true };
 };

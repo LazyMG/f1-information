@@ -82,7 +82,7 @@ const ThumbSection = ({ thumbUrl }: { thumbUrl: string | null }) => {
       >
         <div
           className={`rounded-lg aspect-square relative ${
-            !thumbUrl || !thumbnailUrl ? "bg-yellow-200" : ""
+            !thumbUrl && !thumbnailUrl ? "bg-yellow-200" : ""
           }`}
           id="editor__section-thumbnail__add-button"
         >
