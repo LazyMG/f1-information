@@ -8,12 +8,23 @@ import ConstructorInfoSection from "./constructor-info-section";
 
 type ConstructorSectionSelect = "INFO" | "THUMB" | "IMAGE";
 
-const ConstructorDetail = () => {
+interface TempConstructor{
+  constructor_id: string
+  constructor_images: string[]
+  created_at: string
+  id: number
+  kor_name: string
+  name: string
+  thumb_url: string | null
+}
+
+const ConstructorDetail = ({constructorInfo}:{constructorInfo:TempConstructor}) => {
   const [section, setSection] = useState<ConstructorSectionSelect>("INFO");
 
   const onClickSection = (value: ConstructorSectionSelect) => {
     setSection(value);
   };
+
   return (
     <>
       <div className="mb-5 flex gap-2">
@@ -28,8 +39,8 @@ const ConstructorDetail = () => {
         </SectionButton>
       </div>
       {section === "INFO" && <ConstructorInfoSection />}
-      {section === "THUMB" && <ThumbSection />}
-      {section === "IMAGE" && <ImageSection />}
+      {section === "THUMB" && <ThumbSection thumbUrl={constructorInfo.thumb_url ? constructorInfo.thumb_url : null}/>}
+      {section === "IMAGE" && <ImageSection imageUrls={constructorInfo.constructor_images}/>}
     </>
   );
 };

@@ -1,6 +1,11 @@
-const ConstructorCard = () => {
+import Link from "next/link";
+import { TempConstructor } from "./constructor-info-section";
+
+
+const ConstructorCard = ({constructor}:{constructor:TempConstructor}) => {
   return (
-    <div
+    <Link
+    href={`/admin/constructors/${constructor.constructor_id}`}
       className="bg-blue-gray-100 p-5 grid md:grid-cols-5 gap-2 rounded-lg box-border shadow"
       id="constructor-card"
     >
@@ -18,22 +23,22 @@ const ConstructorCard = () => {
           팀 정보
         </p>
         <p className="md:text-sm" id="constructor-card__info-id">
-          팀 ID: RED_BULL
+          팀 ID: {constructor.constructor_id}
         </p>
         <p className="md:text-sm" id="constructor-korName">
-          한국 이름: Red Bull
+          한국 이름: {constructor.kor_name}
         </p>
         <p className="md:text-sm" id="constructor-name">
-          영어 이름: Red Bull
+          영어 이름: {constructor.name}
         </p>
         <p className="md:text-sm" id="constructor-card__info-created">
-          등록 날짜: 2025-04-15
+          등록 날짜: {constructor.created_at}
         </p>
         <p className="md:text-sm" id="constructor-card__info-update">
-          업데이트 날짜: 2025-04-15
+          업데이트 날짜: {constructor.created_at}
         </p>
       </div>
-    </div>
+    </Link>
   );
 };
 

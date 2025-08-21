@@ -1,7 +1,10 @@
+import { getConstructors } from "@/actions/admin/constructor-actions";
 import ConstructorContainer from "@/components/admin/constructor/constructor-container";
+import { TempConstructor } from "@/components/admin/constructor/constructor-info-section";
 import Link from "next/link";
 
-const AdminConstructorsPage = () => {
+const AdminConstructorsPage = async() => {
+  const constructors = await getConstructors();
   return (
     <div
       className="flex flex-col gap-3 max-w-7xl mx-auto w-full"
@@ -40,7 +43,7 @@ const AdminConstructorsPage = () => {
           </select>
         </div>
       </div>
-      <ConstructorContainer />
+      <ConstructorContainer constructors={constructors as TempConstructor[]}/>
     </div>
   );
 };

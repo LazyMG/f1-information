@@ -1,4 +1,28 @@
-const AdminConstructorRegistPage = () => {
+"use client"
+
+import { uploadConstructorInfo } from "@/actions/admin/constructor-actions";
+import { useRouter } from "next/router";
+import { useState } from "react";
+
+const ConstructorRegistPage = () => {
+  const [id, setId] = useState("");
+  // const router = useRouter();
+
+  const uploadData = async () => {
+    if (id === "") return;
+
+    // server action
+    const result = await uploadConstructorInfo(id)
+
+    // if (result) {
+    //   router.push(`/admin/drivers/${id}`);
+    // }
+
+    if (!result) {
+      console.log(result);
+    }
+  };
+
   return (
     <div
       className="md:grid md:grid-cols-3 md:gap-6 flex flex-col"
@@ -25,6 +49,8 @@ const AdminConstructorRegistPage = () => {
             <input
               className="border border-black rounded-md py-2 px-3 text-lg"
               id="constructor-id"
+              value={id}
+              onChange={(event) => setId(event.target.value)}
             />
           </div>
           <div className="flex flex-col col-span-3 gap-2">
@@ -106,11 +132,11 @@ const AdminConstructorRegistPage = () => {
           </div>
         </form>
         <div className="flex justify-end items-end w-full">
-          <button>저장</button>
+          <button onClick={uploadData}>저장</button>
         </div>
       </div>
     </div>
   );
 };
 
-export default AdminConstructorRegistPage;
+export default ConstructorRegistPage;

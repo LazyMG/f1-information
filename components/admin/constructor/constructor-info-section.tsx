@@ -1,5 +1,15 @@
 "use client";
 
+export interface TempConstructor{
+  constructor_id: string
+  constructor_images: string[]
+  created_at: string
+  id: number
+  kor_name: string
+  name: string
+  thumb_url: string | null
+}
+
 const ConstructorInfoSection = () => {
   return (
     <div
