@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { TempConstructor } from "./constructor-info-section";
+import Image from "next/image";
 
 
 const ConstructorCard = ({constructor}:{constructor:TempConstructor}) => {
@@ -13,7 +14,13 @@ const ConstructorCard = ({constructor}:{constructor:TempConstructor}) => {
         className="flex items-center md:col-span-2"
         id="constructor-card__img"
       >
-        <img className="w-full" src="/red_bull.avif" />
+        {/* <img className="w-full" src="/red_bull.avif" /> */}
+        <Image
+          src={constructor.thumb_url ?? ""}
+          alt="constructor-thumbnail"
+          width={128}
+          height={128}
+        />
       </div>
       <div
         className="md:col-span-3 flex-1 flex flex-col justify-between"
