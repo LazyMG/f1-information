@@ -1,4 +1,21 @@
+"use client"
+
+import { uploadCircuitInfo } from "@/actions/admin/circuit-actions";
+import { useState } from "react";
+
 const CircuitRegsistPage = () => {
+  const [id, setId] = useState("");
+
+  const uploadData = async () => {
+    if (id === "") return;
+
+    // server action
+    const result = await uploadCircuitInfo(id)
+
+    if (!result) {
+      console.log(result);
+    }
+  };
   return (
     <div
       className="md:grid md:grid-cols-3 md:gap-6 flex flex-col"
@@ -25,6 +42,8 @@ const CircuitRegsistPage = () => {
             <input
               className="border border-black rounded-md py-2 px-3 text-lg"
               id="circuit-id"
+              value={id}
+              onChange={(event) => setId(event.target.value)}
             />
           </div>
           <div className="flex flex-col col-span-3 gap-2">
@@ -83,7 +102,7 @@ const CircuitRegsistPage = () => {
           </div>
         </form>
         <div className="flex justify-end items-end w-full">
-          <button>저장</button>
+          <button onClick={uploadData}>저장</button>
         </div>
       </div>
     </div>

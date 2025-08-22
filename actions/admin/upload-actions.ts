@@ -5,6 +5,7 @@ import { uploadDriverImages, uploadDriverThumbnail } from "./driver-actions";
 import { v4 as uuidv4 } from "uuid";
 import { uploadConstructorThumbnail } from "./constructor-actions";
 import { revalidatePath } from "next/cache";
+import { uploadCircuitThumbnail } from "./circuit-actions";
 
 type Entity = "drivers" | "races" | "constructors" | "circuits";
 
@@ -62,6 +63,24 @@ export async function uploadThumbnail(
     if (response.ok) {
       console.log("DB 업데이트까지 성공");
       revalidatePath(`/admin/constructors/${id}`)
+      return { message: "썸네일이 성공적으로 업데이트되었습니다!" };
+    } else {
+      console.log("DB 업데이트 실패");
+      return { message: "DB 업데이트에 실패했습니다." };
+    }
+  }else if(entity === "circuits"){
+    const { data, error } = await supabase.storage
+      .from(process.env.NEXT_PUBLIC_THUMBNAIL_STORAGE_BUCKET!)
+      .upload(filePath, file, { upsert: true });
+    if (error) {
+      console.log(error);
+      return { message: "파일 업로드에 실패했습니다." };
+    }
+    const response = await uploadCircuitThumbnail(id, data.fullPath);
+
+    if (response.ok) {
+      console.log("DB 업데이트까지 성공");
+      revalidatePath(`/admin/circuits/${id}`)
       return { message: "썸네일이 성공적으로 업데이트되었습니다!" };
     } else {
       console.log("DB 업데이트 실패");

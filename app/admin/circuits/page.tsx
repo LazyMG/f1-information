@@ -1,7 +1,10 @@
+import { getCircuits } from "@/actions/admin/circuit-actions";
 import CircuitContainer from "@/components/admin/circuit/circuit-container";
+import { TempCircuit } from "@/components/admin/circuit/circuit-detail";
 import Link from "next/link";
 
-const AdminCircuitsPage = () => {
+const AdminCircuitsPage = async () => {
+  const circuits = await getCircuits();
   return (
     <div
       className="flex flex-col gap-3 max-w-7xl mx-auto w-full"
@@ -31,7 +34,7 @@ const AdminCircuitsPage = () => {
           </select>
         </div>
       </div>
-      <CircuitContainer />
+      <CircuitContainer circuits={circuits as TempCircuit[]}/>
     </div>
   );
 };

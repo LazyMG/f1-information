@@ -3,12 +3,23 @@
 import SectionButton from "@/components/shared/section-button";
 import { useState } from "react";
 import ThumbSection from "../shared/thumb-section";
-import ImageSection from "../shared/image-section";
 import CircuitInfoSection from "./circuit-info-section";
 
-type CircuitSectionSelect = "INFO" | "THUMB" | "IMAGE";
+type CircuitSectionSelect = "INFO" | "THUMB";
 
-const CircuitDetail = () => {
+export interface TempCircuit{
+  circuit_id: string;
+  circuit_image: null | string
+  created_at: string
+  fastest_race_lap: string
+  id: number
+  kor_name: string
+  laps: number
+  length: number
+  name: string
+}
+
+const CircuitDetail = ({circuitInfo}:{circuitInfo:TempCircuit}) => {
   const [section, setSection] = useState<CircuitSectionSelect>("INFO");
 
   const onClickSection = (value: CircuitSectionSelect) => {
@@ -23,13 +34,9 @@ const CircuitDetail = () => {
         <SectionButton isBold={section === "THUMB"}>
           <span onClick={() => onClickSection("THUMB")}>썸네일</span>
         </SectionButton>
-        <SectionButton isBold={section === "IMAGE"}>
-          <span onClick={() => onClickSection("IMAGE")}>이미지</span>
-        </SectionButton>
       </div>
       {section === "INFO" && <CircuitInfoSection />}
-      {section === "THUMB" && <ThumbSection />}
-      {section === "IMAGE" && <ImageSection />}
+      {section === "THUMB" && <ThumbSection thumbUrl={circuitInfo.circuit_image ? circuitInfo.circuit_image : null}/>}
     </>
   );
 };
